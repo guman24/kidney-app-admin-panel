@@ -12,7 +12,7 @@ class RecipeService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<Recipe> saveRecipe(Recipe recipe) async {
+  Future<Recipe> upsertRecipe(Recipe recipe) async {
     try {
       await _firestore
           .collection(_collectionRecipes)

@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kidney_admin/core/enums/action_status.dart';
 import 'package:kidney_admin/core/enums/post_status.dart';
 import 'package:kidney_admin/entities/exercise.dart';
+import 'package:kidney_admin/entities/media.dart';
 import 'package:kidney_admin/services/exercise_service.dart';
+import 'package:kidney_admin/services/media_service.dart';
 import 'package:kidney_admin/view_models/exercise/exercise_state.dart';
+import 'package:kidney_admin/views/shared/media_upload_card.dart';
 
 final exerciseViewModel = NotifierProvider(() => ExerciseViewModel());
 
@@ -15,6 +18,35 @@ class ExerciseViewModel extends Notifier<ExerciseState> {
       fetchExercises();
     });
     return ExerciseState();
+  }
+
+  void saveExercise(Exercise exercise, {MediaUploadData? uploadedMedia}) async {
+    state = state.copyWith(upsertStatus: ActionStatus.loading);
+    try {
+      if (uploadedMedia != null) {
+        final mediaUrl = await ref
+            .read(mediaServiceProvider)
+            .uploadToFirebaseStorage(uploadedMedia, "/recipe_images");
+        if (mediaUrl == null) return;
+        Media media = Media(
+          type: uploadedMedia.isVideo ? MediaType.video : MediaType.image,
+          networkType: NetworkType.network,
+          value: mediaUrl,
+        );
+        exercise = exercise.copyWith(media: media);
+      }
+
+      final savedRecipe = await ref
+          .read(exerciseServiceProvider)
+          .upsertExercise(exercise);
+      final List<Exercise> allExercises = List.from(state.exercises);
+      state = state.copyWith(
+        upsertStatus: ActionStatus.success,
+        exercises: [savedRecipe, ...allExercises],
+      );
+    } catch (error) {
+      state = state.copyWith(upsertStatus: ActionStatus.failed);
+    }
   }
 
   void fetchExercises() async {

@@ -142,7 +142,8 @@ class _AddRecipeScreenState extends ConsumerState<UpsertRecipeScreen> {
                                       description: _descCtrl.text,
                                       ingredients: _ingredients,
                                       instructions: _instructions,
-                                      status: PostStatus.pending,
+                                      status:
+                                          recipe?.status ?? PostStatus.pending,
                                     ),
                                     recipeFile: _mediaUploadData,
                                   );

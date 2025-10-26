@@ -12,6 +12,20 @@ class ExerciseService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<Exercise> upsertExercise(Exercise exercise) async {
+    try {
+      await _firestore
+          .collection(FirebaseCollections.exercises)
+          .doc(exercise.id)
+          .set(exercise.toMap(), SetOptions(merge: true));
+      return exercise;
+    } on FirebaseException catch (error) {
+      throw DataException(error.message ?? error.code);
+    } catch (error) {
+      throw DataException(error.toString());
+    }
+  }
+
   Future<List<Exercise>> fetchExercises() async {
     try {
       final query = await _firestore

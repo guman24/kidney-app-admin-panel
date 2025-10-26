@@ -11,6 +11,7 @@ import 'package:kidney_admin/core/extension/snack_bar_extension.dart';
 import 'package:kidney_admin/entities/recipe.dart';
 import 'package:kidney_admin/view_models/recipe/recipe_view_model.dart';
 import 'package:kidney_admin/views/shared/custom_button.dart';
+import 'package:kidney_admin/views/shared/custom_image_or_video.dart';
 
 class RecipeDetailScreen extends ConsumerWidget {
   const RecipeDetailScreen({super.key, this.recipe, this.recipeId});
@@ -49,24 +50,25 @@ class RecipeDetailScreen extends ConsumerWidget {
                   children: [
                     AspectRatio(
                       aspectRatio: 2.3,
-                      child: CachedNetworkImage(
-                        imageUrl: recipe!.media?.value ?? "",
-                        fit: BoxFit.cover,
-                        progressIndicatorBuilder: (context, _, progress) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: progress.progress,
-                            ),
-                          );
-                        },
-                        errorWidget: (context, error, obj) {
-                          return Icon(
-                            CupertinoIcons.photo,
-                            size: 200,
-                            color: AppColors.green,
-                          );
-                        },
-                      ),
+                      child: CustomImageOrVideo(media: recipe!.media),
+                      // child: CachedNetworkImage(
+                      //   imageUrl: recipe!.media?.value ?? "",
+                      //   fit: BoxFit.cover,
+                      //   progressIndicatorBuilder: (context, _, progress) {
+                      //     return Center(
+                      //       child: CircularProgressIndicator(
+                      //         value: progress.progress,
+                      //       ),
+                      //     );
+                      //   },
+                      //   errorWidget: (context, error, obj) {
+                      //     return Icon(
+                      //       CupertinoIcons.photo,
+                      //       size: 200,
+                      //       color: AppColors.green,
+                      //     );
+                      //   },
+                      // ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),

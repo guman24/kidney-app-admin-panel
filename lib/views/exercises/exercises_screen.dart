@@ -22,7 +22,32 @@ class ExercisesScreen extends ConsumerWidget {
     return ModalProgressHUD(
       inAsyncCall: exerciseState.deleteStatus.isLoading,
       child: Scaffold(
-        appBar: DashboardAppBar(title: "Exercises"),
+        appBar: DashboardAppBar(
+          titleWidget: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 12.0,
+            children: [
+              Text(
+                "Exercises",
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textColor,
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  context.goNamed(Routes.upsertExercise.name);
+                },
+                child: Icon(
+                  CupertinoIcons.plus_circle_fill,
+                  color: AppColors.green,
+                ),
+              ),
+            ],
+          ),
+        ),
         body: Builder(
           builder: (context) {
             return SingleChildScrollView(
@@ -133,6 +158,22 @@ class ExercisesScreen extends ConsumerWidget {
                                 padding: const EdgeInsets.all(2.0),
                                 child: Icon(
                                   CupertinoIcons.delete,
+                                  color: AppColors.gradient40,
+                                  size: 18.0,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                context.goNamed(
+                                  Routes.upsertExercise.name,
+                                  extra: exercise,
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Icon(
+                                  CupertinoIcons.pen,
                                   color: AppColors.gradient40,
                                   size: 18.0,
                                 ),

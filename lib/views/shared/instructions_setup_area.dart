@@ -26,22 +26,23 @@ class _InstructionsSetupAreaState extends State<InstructionsSetupArea> {
     super.initState();
     if (widget.instructions.isEmpty) {
       _instructions.add(Instruction(instruction: "", step: 1));
+    } else {
+      _instructions.addAll(widget.instructions);
     }
   }
 
   void updateInstruction(Instruction instruction) {
     final int index = _instructions.indexWhere(
-      (e) =>
-          e.instruction == instruction.instruction &&
-          e.step == instruction.step,
+      (e) => e.step == instruction.step,
     );
     if (index != -1) {
       _instructions[index] = instruction;
       setState(() {});
     }
-    widget.onChangedInstructions?.call(
-      _instructions.where((e) => e.instruction.isNotEmpty).toList(),
-    );
+    final validInstructions = _instructions
+        .where((e) => e.instruction.isNotEmpty)
+        .toList();
+    widget.onChangedInstructions?.call(validInstructions);
   }
 
   @override

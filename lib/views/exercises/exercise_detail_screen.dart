@@ -33,14 +33,9 @@ class ExerciseDetailScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 18.0,
                     children: [
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: AppColors.green.withValues(alpha: 0.1),
-                        ),
-                        child: AspectRatio(
-                          aspectRatio: 2.5,
-                          child: CustomImageOrVideo(media: exercise!.media),
-                        ),
+                      AspectRatio(
+                        aspectRatio: 2.5,
+                        child: CustomImageOrVideo(media: exercise!.media),
                       ),
 
                       Padding(

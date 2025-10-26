@@ -9,6 +9,7 @@ enum Routes {
   upsertRecipe("upsert-recipe", '/upsert-recipe'),
   recipeDetails("recipe-details", '/recipe-details'),
   exercises("exercises", '/exercises'),
+  upsertExercise("upsert-exercise", '/upsert-exercise'),
   exerciseDetails("exercise-details", '/exercise-details'),
   settings("settings", '/settings');
 

@@ -40,7 +40,7 @@ class RecipeViewModel extends Notifier<RecipeState> {
 
       final savedRecipe = await ref
           .read(recipeServiceProvider)
-          .saveRecipe(recipe);
+          .upsertRecipe(recipe);
       final List<Recipe> allRecipes = List.from(state.recipes);
       state = state.copyWith(
         saveRecipeStatus: ActionStatus.success,

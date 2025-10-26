@@ -161,11 +161,6 @@ class RecipesScreen extends ConsumerWidget {
                                   Routes.upsertRecipe.name,
                                   extra: recipe,
                                 );
-                                // context.showDeleteConfirmDialog(
-                                //   onDelete: () => ref
-                                //       .read(recipeViewModel.notifier)
-                                //       .deleteRecipe(recipe.id),
-                                // );
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),

@@ -12,6 +12,7 @@ import 'package:kidney_admin/views/dashboard/dashboard_screen.dart';
 import 'package:kidney_admin/views/dashboard/widgets/side_menu.dart';
 import 'package:kidney_admin/views/exercises/exercise_detail_screen.dart';
 import 'package:kidney_admin/views/exercises/exercises_screen.dart';
+import 'package:kidney_admin/views/exercises/upsert_exercise_screen.dart';
 import 'package:kidney_admin/views/olivers/olivers_screen.dart';
 import 'package:kidney_admin/views/overview/overview_screen.dart';
 import 'package:kidney_admin/views/recipes/upsert_recipe_screen.dart';
@@ -129,6 +130,16 @@ StatefulShellRoute dashboardRoute(Ref ref) {
               return NoTransitionPage(child: ExercisesScreen());
             },
             routes: [
+              GoRoute(
+                path: Routes.upsertExercise.path,
+                name: Routes.upsertExercise.name,
+                pageBuilder: (context, state) {
+                  final exercise = state.extra as Exercise?;
+                  return NoTransitionPage(
+                    child: UpsertExerciseScreen(exercise: exercise),
+                  );
+                },
+              ),
               GoRoute(
                 path: ':id',
                 name: Routes.exerciseDetails.name,

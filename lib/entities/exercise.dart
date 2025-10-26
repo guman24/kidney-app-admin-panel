@@ -1,9 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:kidney_admin/core/enums/post_status.dart';
 import 'package:kidney_admin/core/extension/json_extension.dart';
 import 'package:kidney_admin/entities/instruction.dart';
 import 'package:kidney_admin/entities/media.dart';
-import 'package:kidney_admin/entities/recipe.dart';
 
 class Exercise extends Equatable {
   final String id;
@@ -81,4 +81,21 @@ class Exercise extends Equatable {
 
   @override
   List<Object?> get props => [id];
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'userId': userId,
+      'username': username,
+      'userProfileUrl': userProfileUrl,
+      'name': name,
+      'benefits': benefits,
+      'type': type,
+      'difficultyLevel': difficultyLevel,
+      'duration': duration,
+      'instructions': instructions.map((x) => x.toMap()).toList(),
+      'media': media?.toMap(),
+      'status': status.name,
+    };
+  }
 }

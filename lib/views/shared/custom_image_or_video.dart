@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kidney_admin/core/constants/app_colors.dart';
 import 'package:kidney_admin/entities/media.dart';
 import 'package:video_player/video_player.dart';
 
@@ -31,9 +32,16 @@ class _CustomImageOrVideoState extends State<CustomImageOrVideo> {
   }
 
   @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 180,
+      decoration: BoxDecoration(color: AppColors.green.withValues(alpha: 0.1)),
       width: double.infinity,
       child: Builder(
         builder: (context) {
@@ -57,7 +65,44 @@ class _CustomImageOrVideoState extends State<CustomImageOrVideo> {
             if (_controller != null && _controller!.value.isInitialized) {
               return AspectRatio(
                 aspectRatio: _controller!.value.aspectRatio,
-                child: VideoPlayer(_controller!),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    VideoPlayer(_controller!),
+                    Positioned.fill(
+                      child: Container(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            if (_controller!.value.isPlaying) {
+                              _controller!.pause();
+                            } else {
+                              _controller!.play();
+                            }
+                            setState(() {});
+                          },
+                          child: Visibility(
+                            visible: !_controller!.value.isPlaying,
+                            child: Align(
+                              child: SizedBox.square(
+                                dimension: 50,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                  ),
+                                  child: Icon(
+                                    Icons.play_arrow,
+                                    color: AppColors.green,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             } else if (_controller?.value.isBuffering ?? false) {
               return Center(child: CircularProgressIndicator());
