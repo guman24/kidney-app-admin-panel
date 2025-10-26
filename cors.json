@@ -1,0 +1,13 @@
+[
+  {
+    "origin": [
+      "https://oliver-app-aebc2.web.app",
+      "https://oliver-app-aebc2.firebaseapp.com",
+      "http://localhost:5000",
+      "http://localhost:3000"
+    ],
+    "method": ["GET"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
+]
