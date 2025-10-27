@@ -2,10 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kidney_admin/core/extension/json_extension.dart';
 import 'package:kidney_admin/entities/exercise.dart';
+import 'package:kidney_admin/entities/news.dart';
 import 'package:kidney_admin/entities/recipe.dart';
 import 'package:kidney_admin/routes/routes.dart';
 import 'package:kidney_admin/view_models/auth/auth_view_model.dart';
 import 'package:kidney_admin/view_models/exercise/exercise_view_model.dart';
+import 'package:kidney_admin/view_models/news/news_view_model.dart';
 import 'package:kidney_admin/view_models/recipe/recipe_view_model.dart';
 import 'package:kidney_admin/views/chat/chats_screen.dart';
 import 'package:kidney_admin/views/dashboard/dashboard_screen.dart';
@@ -13,12 +15,15 @@ import 'package:kidney_admin/views/dashboard/widgets/side_menu.dart';
 import 'package:kidney_admin/views/exercises/exercise_detail_screen.dart';
 import 'package:kidney_admin/views/exercises/exercises_screen.dart';
 import 'package:kidney_admin/views/exercises/upsert_exercise_screen.dart';
+import 'package:kidney_admin/views/news/news_research_screen.dart';
+import 'package:kidney_admin/views/news/upsert_news_screen.dart';
 import 'package:kidney_admin/views/olivers/olivers_screen.dart';
 import 'package:kidney_admin/views/overview/overview_screen.dart';
 import 'package:kidney_admin/views/recipes/upsert_recipe_screen.dart';
 import 'package:kidney_admin/views/recipes/recipe_detail_screen.dart';
 import 'package:kidney_admin/views/recipes/recipes_screen.dart';
 import 'package:kidney_admin/views/users/users_screen.dart';
+import 'package:kidney_admin/views/wait_time/current_wait_times_screen.dart';
 
 StatefulShellRoute dashboardRoute(Ref ref) {
   // final isAdmin =
@@ -155,6 +160,43 @@ StatefulShellRoute dashboardRoute(Ref ref) {
                 },
               ),
             ],
+          ),
+        ],
+      ),
+
+      // news shell
+      StatefulShellBranch(
+        routes: [
+          GoRoute(
+            path: Routes.news.path,
+            name: Routes.news.name,
+            pageBuilder: (context, state) {
+              ref.read(newsViewModel.notifier).fetchAllNews();
+              return NoTransitionPage(child: NewsResearchScreen());
+            },
+            routes: [
+              GoRoute(
+                path: Routes.save.path,
+                name: Routes.save.name,
+                pageBuilder: (context, state) {
+                  final news = state.extra as News?;
+                  return NoTransitionPage(child: UpsertNewsScreen(news: news));
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+
+      // current wait times shell
+      StatefulShellBranch(
+        routes: [
+          GoRoute(
+            path: Routes.waitTimes.path,
+            name: Routes.waitTimes.name,
+            pageBuilder: (context, state) {
+              return NoTransitionPage(child: CurrentWaitTimesScreen());
+            },
           ),
         ],
       ),

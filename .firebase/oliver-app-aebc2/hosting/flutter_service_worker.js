@@ -3,11 +3,11 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"flutter_bootstrap.js": "b4349e22f3c67787d03656915f1c1a4c",
+const RESOURCES = {"flutter_bootstrap.js": "793d61200d893ed99b28c36b432bf2de",
 "version.json": "b3be5a6e5770ffa3fde581e7e21efc71",
 "index.html": "d50afef119673bd8f835cd6e1610b343",
 "/": "d50afef119673bd8f835cd6e1610b343",
-"main.dart.js": "2a1a8dcccb652b7581302ed8d630e0fc",
+"main.dart.js": "bcf29b877d43218fbcd78ea5cc7bc65d",
 "flutter.js": "83d881c1dbb6d6bcd6b42e274605b69c",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
@@ -23,7 +23,7 @@ const RESOURCES = {"flutter_bootstrap.js": "b4349e22f3c67787d03656915f1c1a4c",
 "assets/packages/flutter_dropzone_web/assets/flutter_dropzone.js": "dddc5c70148f56609c3fb6b29929388e",
 "assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
 "assets/AssetManifest.bin": "8f9b94f2d860f1c632bd7fd641921a73",
-"assets/fonts/MaterialIcons-Regular.otf": "83e54ec3d87070d68e655f92b7504798",
+"assets/fonts/MaterialIcons-Regular.otf": "b453ee0bca5b3dba5bc78a51557bea04",
 "assets/assets/images/oliver-cute.png": "0495275c5cc2c961c477588bd42beec8",
 "assets/assets/images/sample-profile-girl.jpg": "ffa8743762f553c8a5503f8786304cce",
 "assets/assets/images/oliver-durbin.png": "f66d678924a4e436fc81a6ec84476f76",

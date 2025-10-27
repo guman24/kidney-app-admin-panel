@@ -26,7 +26,7 @@ class ExerciseViewModel extends Notifier<ExerciseState> {
       if (uploadedMedia != null) {
         final mediaUrl = await ref
             .read(mediaServiceProvider)
-            .uploadToFirebaseStorage(uploadedMedia, "/recipe_images");
+            .uploadToFirebaseStorage(uploadedMedia, "/exercise_images");
         if (mediaUrl == null) return;
         Media media = Media(
           type: uploadedMedia.isVideo ? MediaType.video : MediaType.image,

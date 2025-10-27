@@ -94,6 +94,16 @@ class _SideMenuState extends ConsumerState<SideMenu> {
       "icon_outline": Icons.run_circle_outlined,
       'icon_filled': Icons.run_circle,
     },
+    {
+      "name": "News & Research",
+      "icon_outline": CupertinoIcons.news,
+      'icon_filled': CupertinoIcons.news_solid,
+    },
+    {
+      "name": "Wait Times",
+      "icon_outline": CupertinoIcons.clock,
+      'icon_filled': CupertinoIcons.clock_fill,
+    },
   ];
 
   void changeIndex(int index) =>

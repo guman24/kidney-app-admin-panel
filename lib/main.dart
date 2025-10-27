@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kidney_admin/core/theme/app_theme.dart';
 import 'package:kidney_admin/routes/app_router.dart';
@@ -53,6 +54,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       routerConfig: router,
       title: 'Kidney App Admin Dashboard',
       theme: appThemeData,
+      localizationsDelegates: [FlutterQuillLocalizations.delegate],
     );
   }
 }
