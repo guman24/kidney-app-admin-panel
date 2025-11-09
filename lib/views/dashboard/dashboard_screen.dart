@@ -10,6 +10,7 @@ import 'package:kidney_admin/views/olivers/olivers_screen.dart';
 import 'package:kidney_admin/views/overview/overview_screen.dart';
 import 'package:kidney_admin/views/recipes/recipes_screen.dart';
 import 'package:kidney_admin/views/users/users_screen.dart';
+import 'package:kidney_admin/views/wait_time/current_wait_times_screen.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key, required this.navigationShell});
@@ -20,6 +21,13 @@ class DashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(navMenuProvider, (prev, state) {
+      if (state.keys.firstOrNull == 3 &&
+          (state.values.firstOrNull?.isNotEmpty ?? false)) {
+        context.go("/${state.values.first!.toLowerCase()}");
+      }
+    });
+
     return Scaffold(
       key: scaffoldKey,
       drawer: Drawer(shape: RoundedRectangleBorder(), child: SideMenu()),
@@ -32,53 +40,9 @@ class DashboardScreen extends ConsumerWidget {
   Widget _desktopBuilder(WidgetRef ref) {
     return Row(
       children: [
-        SizedBox(width: 250, child: SideMenu()),
+        SizedBox(width: 280, child: SideMenu()),
         // Expanded(child: _indexedStackBuilder(ref)),
         Expanded(child: navigationShell),
-      ],
-    );
-  }
-
-  Widget _indexedStackBuilder(WidgetRef ref) {
-    final authState = ref.watch(authViewModel);
-    final role = authState.currentOliver?.role.toLowerCase();
-    final navIndex = ref.watch(navMenuProvider);
-    debugPrint(
-      "DashboardScreen: role=$role, navIndex=$navIndex, authUser=${authState.authUser?.email} at ${DateTime.now()}",
-    );
-
-    // Define children based on role
-    //todo: use this later when moderator/specialist accounts available
-    final List<Widget> dashboardViews = role == "admin"
-        ? [
-            OverviewScreen(),
-            OliversScreen(),
-            ChatsScreen(),
-            UsersScreen(),
-            RecipesScreen(),
-            ExercisesScreen(),
-          ]
-        : [
-            OverviewScreen(),
-            ChatsScreen(),
-            UsersScreen(),
-            RecipesScreen(),
-            ExercisesScreen(),
-          ];
-
-    // Handle null authUser
-    if (authState.authUser == null) {
-      return Center(child: Text('No user logged in, redirecting...'));
-    }
-
-    return IndexedStack(
-      index: navIndex,
-      children: [
-        OverviewScreen(),
-        ChatsScreen(),
-        UsersScreen(),
-        RecipesScreen(),
-        ExercisesScreen(),
       ],
     );
   }

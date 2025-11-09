@@ -3,27 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kidney_admin/core/constants/app_colors.dart';
+import 'package:kidney_admin/core/extension/json_extension.dart';
 import 'package:kidney_admin/core/widgets/adaptive_text.dart';
 import 'package:kidney_admin/entities/oliver.dart';
 import 'package:kidney_admin/view_models/auth/auth_view_model.dart';
 
 final navMenuProvider = NotifierProvider(() => NavMenuNotifier());
 
-class NavMenuNotifier extends Notifier<int> {
+class NavMenuNotifier extends Notifier<Map<int, String?>> {
   late StatefulNavigationShell _navigationShell;
 
   @override
-  int build() {
-    return 0;
+  Map<int, String?> build() {
+    return {0: null};
   }
 
   void setNavigationShell(StatefulNavigationShell shell) {
     _navigationShell = shell;
   }
 
-  void changeIndex(int index) {
+  void changeIndex(int index, {String? title}) {
     _navigationShell.goBranch(index);
-    state = index;
+    state = {index: title};
   }
 }
 
@@ -85,6 +86,12 @@ class _SideMenuState extends ConsumerState<SideMenu> {
       'icon_filled': CupertinoIcons.person_2_fill,
     },
     {
+      "name": "Mental Health",
+      "icon_outline": CupertinoIcons.capsule,
+      'icon_filled': CupertinoIcons.capsule_fill,
+      'sub_menus': ["Playlist", "Inspirations", "Journal", "Mental Wellness"],
+    },
+    {
       "name": "Recipes",
       "icon_outline": Icons.fastfood_outlined,
       'icon_filled': Icons.fastfood,
@@ -106,12 +113,14 @@ class _SideMenuState extends ConsumerState<SideMenu> {
     },
   ];
 
-  void changeIndex(int index) =>
-      ref.read(navMenuProvider.notifier).changeIndex(index);
+  void changeIndex(int index, {String? menu}) =>
+      ref.read(navMenuProvider.notifier).changeIndex(index, title: menu);
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = ref.watch(navMenuProvider);
+    final navMenuState = ref.watch(navMenuProvider);
+    final int currentIndex = navMenuState.keys.first;
+    final String? currentMenu = navMenuState.values.first;
     final Oliver? oliver = ref.watch(authViewModel).currentOliver;
     // final menuItems = oliver?.role.toLowerCase() == 'admin'
     //     ? menuItemsAdmin
@@ -148,12 +157,15 @@ class _SideMenuState extends ConsumerState<SideMenu> {
 
             ...List.generate(menuItems.length, (index) {
               final menu = menuItems[index];
-              return _sideMenuItem(
-                onTap: () => changeIndex(index),
+              return _SideMenuItem(
+                onTap: (title) {
+                  changeIndex(index, menu: title);
+                },
                 title: menu['name'],
                 icon: currentIndex == index
                     ? menu['icon_filled']
                     : menu['icon_outline'],
+                subMenus: menu.getStringListFromJson('sub_menus'),
                 isEnabled: currentIndex == index,
               );
             }),
@@ -163,25 +175,179 @@ class _SideMenuState extends ConsumerState<SideMenu> {
     );
   }
 
-  Widget _sideMenuItem({
-    required String title,
-    required IconData icon,
-    bool isEnabled = false,
-    VoidCallback? onTap,
-  }) {
+  // Widget _sideMenuItem({
+  //   required String title,
+  //   required IconData icon,
+  //   bool isEnabled = false,
+  //   VoidCallback? onTap,
+  //   List<String> subMenus = const [],
+  // }) {
+  //   final menuColor = isEnabled
+  //       ? AppColors.olive
+  //       : AppColors.black.withValues(alpha: 0.7);
+  //   return InkWell(
+  //     onTap: () {},
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(8.0),
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         spacing: 12,
+  //         children: [
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             spacing: 16.0,
+  //             children: [
+  //               Icon(icon, size: 20.0, color: menuColor),
+  //               Text(title, style: TextStyle(fontSize: 16.0, color: menuColor)),
+  //               if (subMenus.isNotEmpty) Icon(Icons.keyboard_arrow_up),
+  //             ],
+  //           ),
+  //           if (subMenus.isNotEmpty)
+  //             Padding(
+  //               padding: const EdgeInsets.symmetric(horizontal: 12.0),
+  //               child: Column(
+  //                 spacing: 10,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: subMenus
+  //                     .map(
+  //                       (subTitle) => GestureDetector(
+  //                         onTap: () {},
+  //                         child: Padding(
+  //                           padding: const EdgeInsets.all(4.0),
+  //                           child: Text(
+  //                             subTitle,
+  //                             style: TextStyle(
+  //                               fontSize: 16.0,
+  //                               color: menuColor,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     )
+  //                     .toList(),
+  //               ),
+  //             ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+}
+
+class _SideMenuItem extends ConsumerStatefulWidget {
+  const _SideMenuItem({
+    required this.title,
+    required this.icon,
+    this.onTap,
+    this.isEnabled = false,
+    this.subMenus = const [],
+  });
+
+  final String title;
+  final IconData icon;
+  final Function(String)? onTap;
+  final List<String> subMenus;
+  final bool isEnabled;
+
+  @override
+  ConsumerState<_SideMenuItem> createState() => _SideMenuItemState();
+}
+
+class _SideMenuItemState extends ConsumerState<_SideMenuItem> {
+  IconData get icon => widget.icon;
+
+  String get title => widget.title;
+
+  List<String> get subMenus => widget.subMenus;
+
+  bool get isEnabled => widget.isEnabled;
+
+  Function(String)? get onTap => widget.onTap;
+
+  bool subMenusExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final menuTitle = ref.watch(navMenuProvider).values.firstOrNull;
     final menuColor = isEnabled
         ? AppColors.olive
         : AppColors.black.withValues(alpha: 0.7);
     return InkWell(
-      onTap: onTap,
+      onTap: () {
+        if (widget.subMenus.isEmpty) {
+          onTap?.call(title);
+        } else {
+          /// toggle sub menus view
+          if (!subMenusExpanded) {
+            onTap?.call(menuTitle ?? subMenus.first);
+          }
+          setState(() {
+            subMenusExpanded = !subMenusExpanded;
+          });
+        }
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          spacing: 16.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 12,
           children: [
-            Icon(icon, size: 20.0, color: menuColor),
-            Text(title, style: TextStyle(fontSize: 16.0, color: menuColor)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              spacing: 16.0,
+              children: [
+                Icon(icon, size: 20.0, color: menuColor),
+                Text(title, style: TextStyle(fontSize: 16.0, color: menuColor)),
+                if (subMenus.isNotEmpty)
+                  Icon(
+                    subMenusExpanded
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    size: 18.0,
+                    color: menuColor,
+                  ),
+              ],
+            ),
+            if (subMenus.isNotEmpty && subMenusExpanded)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  spacing: 10,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: subMenus.map((subTitle) {
+                    final bool isSubMenuSelected =
+                        isEnabled && subTitle == menuTitle;
+                    final subMenuColor = isSubMenuSelected
+                        ? AppColors.olive
+                        : AppColors.black.withValues(alpha: 0.7);
+                    return SizedBox(
+                      width: double.infinity,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: isSubMenuSelected ? subMenuColor : null,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            onTap?.call(subTitle);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(
+                              subTitle,
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: isSubMenuSelected
+                                    ? AppColors.white
+                                    : AppColors.black.withValues(alpha: 0.5),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
           ],
         ),
       ),

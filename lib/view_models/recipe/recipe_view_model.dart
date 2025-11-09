@@ -51,7 +51,7 @@ class RecipeViewModel extends Notifier<RecipeState> {
     }
   }
 
-  void fetchRecipes() async {
+  Future<void> fetchRecipes() async {
     state = state.copyWith(fetchRecipeStatus: ActionStatus.loading);
     try {
       final recipes = await ref.read(recipeServiceProvider).fetchRecipes();

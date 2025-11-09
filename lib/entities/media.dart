@@ -2,7 +2,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:kidney_admin/core/extension/json_extension.dart';
 
-enum MediaType { none, image, video }
+enum MediaType { none, image, video, audio }
 
 enum NetworkType { file, network, asset }
 
@@ -12,6 +12,8 @@ extension StringX on String {
       return MediaType.image;
     } else if (this == 'video') {
       return MediaType.video;
+    } else if (this == 'audio') {
+      return MediaType.audio;
     }
     return MediaType.none;
   }

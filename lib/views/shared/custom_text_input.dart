@@ -12,6 +12,7 @@ class CustomTextInput extends StatelessWidget {
     this.onChanged,
     this.maxLines,
     this.initialValue,
+    this.title,
   });
 
   final String? hint;
@@ -22,6 +23,7 @@ class CustomTextInput extends StatelessWidget {
   final Function(String)? onChanged;
   final int? maxLines;
   final String? initialValue;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,8 @@ class CustomTextInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 2.0,
       children: [
+        if (title != null)
+          Text(title ?? "", style: Theme.of(context).textTheme.titleSmall),
         TextFormField(
           maxLines: maxLines,
           onChanged: onChanged,

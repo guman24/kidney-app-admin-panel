@@ -49,7 +49,7 @@ class ExerciseViewModel extends Notifier<ExerciseState> {
     }
   }
 
-  void fetchExercises() async {
+  Future<void> fetchExercises() async {
     debugPrint("Fetch exercises...");
     state = state.copyWith(fetchExercisesStatus: ActionStatus.loading);
     try {

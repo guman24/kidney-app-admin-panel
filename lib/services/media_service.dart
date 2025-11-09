@@ -14,8 +14,19 @@ class MediaService {
     try {
       final storageRef = FirebaseStorage.instance.ref();
       final fileRef = storageRef.child('$path/${mediaData.fileName}');
-
-      final metadata = SettableMetadata(contentType: mediaData.mimeType);
+      final isAudio = mediaData.mimeType.startsWith('audio/');
+      final metadata = SettableMetadata(
+        contentType: mediaData.mimeType,
+        customMetadata: isAudio
+            ? {
+                'uploadedAt': DateTime.now().toIso8601String(),
+                'fileType': 'audio',
+              }
+            : {
+                'uploadedAt': DateTime.now().toIso8601String(),
+                'fileType': 'media',
+              },
+      );
 
       final uploadTask = fileRef.putData(mediaData.bytes, metadata);
 

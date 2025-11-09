@@ -17,6 +17,14 @@ extension JsonExtensionX on Map<String, dynamic> {
     }
   }
 
+  List<String> getStringListFromJson(String key) {
+    try {
+      return this[key];
+    } catch (error) {
+      return [];
+    }
+  }
+
   /// Get int or null value of key from json
   int? getIntOrNullFromJson(String key, {int? defaultInt}) {
     try {
