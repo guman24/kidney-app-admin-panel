@@ -36,45 +36,12 @@ class SideMenu extends ConsumerStatefulWidget {
 }
 
 class _SideMenuState extends ConsumerState<SideMenu> {
-  List<Map<String, dynamic>> menuItemsMaintainer = [
+  List<Map<String, dynamic>> menuItems = [
     {
       "name": "Dashboard",
       "icon_outline": Icons.space_dashboard_outlined,
       'icon_filled': Icons.space_dashboard,
     },
-
-    {
-      "name": "Chats",
-      "icon_outline": CupertinoIcons.chat_bubble,
-      'icon_filled': CupertinoIcons.chat_bubble_fill,
-    },
-    {
-      "name": "Users",
-      "icon_outline": CupertinoIcons.person_2,
-      'icon_filled': CupertinoIcons.person_2_fill,
-    },
-    {
-      "name": "Recipes",
-      "icon_outline": Icons.fastfood_outlined,
-      'icon_filled': Icons.fastfood,
-    },
-    {
-      "name": "Exercises",
-      "icon_outline": Icons.run_circle_outlined,
-      'icon_filled': Icons.run_circle,
-    },
-  ];
-  List<Map<String, dynamic>> menuItemsAdmin = [
-    {
-      "name": "Dashboard",
-      "icon_outline": Icons.space_dashboard_outlined,
-      'icon_filled': Icons.space_dashboard,
-    },
-    // {
-    //   "name": "Olivers",
-    //   "icon_outline": CupertinoIcons.person_3,
-    //   'icon_filled': CupertinoIcons.person_3_fill,
-    // },
     {
       "name": "Chats",
       "icon_outline": CupertinoIcons.chat_bubble,
@@ -119,13 +86,13 @@ class _SideMenuState extends ConsumerState<SideMenu> {
   @override
   Widget build(BuildContext context) {
     final navMenuState = ref.watch(navMenuProvider);
-    final int currentIndex = navMenuState.keys.first;
-    final String? currentMenu = navMenuState.values.first;
-    final Oliver? oliver = ref.watch(authViewModel).currentOliver;
-    // final menuItems = oliver?.role.toLowerCase() == 'admin'
-    //     ? menuItemsAdmin
-    //     : menuItemsMaintainer;
-    final menuItems = menuItemsAdmin;
+    final int currentIndex = navMenuState.isNotEmpty
+        ? navMenuState.keys.first
+        : 0;
+    final menuTitle = navMenuState.isNotEmpty
+        ? navMenuState.values.first
+        : null;
+
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -165,7 +132,9 @@ class _SideMenuState extends ConsumerState<SideMenu> {
                 icon: currentIndex == index
                     ? menu['icon_filled']
                     : menu['icon_outline'],
-                subMenus: menu.getStringListFromJson('sub_menus'),
+                subMenus: menu.containsKey('sub_menus')
+                    ? menu.getStringListFromJson('sub_menus')
+                    : [],
                 isEnabled: currentIndex == index,
               );
             }),
@@ -174,64 +143,6 @@ class _SideMenuState extends ConsumerState<SideMenu> {
       ),
     );
   }
-
-  // Widget _sideMenuItem({
-  //   required String title,
-  //   required IconData icon,
-  //   bool isEnabled = false,
-  //   VoidCallback? onTap,
-  //   List<String> subMenus = const [],
-  // }) {
-  //   final menuColor = isEnabled
-  //       ? AppColors.olive
-  //       : AppColors.black.withValues(alpha: 0.7);
-  //   return InkWell(
-  //     onTap: () {},
-  //     child: Padding(
-  //       padding: const EdgeInsets.all(8.0),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         spacing: 12,
-  //         children: [
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.start,
-  //             spacing: 16.0,
-  //             children: [
-  //               Icon(icon, size: 20.0, color: menuColor),
-  //               Text(title, style: TextStyle(fontSize: 16.0, color: menuColor)),
-  //               if (subMenus.isNotEmpty) Icon(Icons.keyboard_arrow_up),
-  //             ],
-  //           ),
-  //           if (subMenus.isNotEmpty)
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 12.0),
-  //               child: Column(
-  //                 spacing: 10,
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: subMenus
-  //                     .map(
-  //                       (subTitle) => GestureDetector(
-  //                         onTap: () {},
-  //                         child: Padding(
-  //                           padding: const EdgeInsets.all(4.0),
-  //                           child: Text(
-  //                             subTitle,
-  //                             style: TextStyle(
-  //                               fontSize: 16.0,
-  //                               color: menuColor,
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     )
-  //                     .toList(),
-  //               ),
-  //             ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }
 
 class _SideMenuItem extends ConsumerStatefulWidget {
@@ -278,9 +189,9 @@ class _SideMenuItemState extends ConsumerState<_SideMenuItem> {
           onTap?.call(title);
         } else {
           /// toggle sub menus view
-          if (!subMenusExpanded) {
-            onTap?.call(menuTitle ?? subMenus.first);
-          }
+          // if (!subMenusExpanded) {
+          //   onTap?.call(title);
+          // }
           setState(() {
             subMenusExpanded = !subMenusExpanded;
           });

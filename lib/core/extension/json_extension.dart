@@ -18,11 +18,11 @@ extension JsonExtensionX on Map<String, dynamic> {
   }
 
   List<String> getStringListFromJson(String key) {
-    try {
-      return this[key];
-    } catch (error) {
-      return [];
+    final value = this[key];
+    if (value is List) {
+      return value.map((e) => e.toString()).toList();
     }
+    return [];
   }
 
   /// Get int or null value of key from json

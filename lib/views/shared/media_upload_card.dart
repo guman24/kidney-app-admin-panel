@@ -463,28 +463,32 @@ class _MediaUploadCardState extends State<MediaUploadCard> {
     if (_mediaData == null && !_isFromNetwork) return const SizedBox.shrink();
 
     final url = _previewUrl ?? '';
+    String decodedUrl = Uri.decodeFull(url).toLowerCase();
+    final objectPath = decodedUrl.contains('/o/')
+        ? decodedUrl.split('/o/').last.split('?').first
+        : decodedUrl;
     final isImage =
         _mediaData?.isImage ??
-        (url.endsWith('.jpg') ||
-            url.endsWith('.jpeg') ||
-            url.endsWith('.png') ||
-            url.endsWith('.webp') ||
-            url.endsWith('.gif'));
+        (objectPath.endsWith('.jpg') ||
+            objectPath.endsWith('.jpeg') ||
+            objectPath.endsWith('.png') ||
+            objectPath.endsWith('.webp') ||
+            objectPath.endsWith('.gif'));
     final isVideo =
         _mediaData?.isVideo ??
-        (url.endsWith('.mp4') ||
-            url.endsWith('.mov') ||
-            url.endsWith('.webm') ||
-            url.contains('video'));
+        (objectPath.endsWith('.mp4') ||
+            objectPath.endsWith('.mov') ||
+            objectPath.endsWith('.webm') ||
+            objectPath.contains('video'));
     final isAudio =
         _mediaData?.isAudio ??
         (url.endsWith('.mp3') ||
-            url.endsWith('.m4a') ||
-            url.endsWith('.aac') ||
-            url.endsWith('.wav') ||
-            url.endsWith('.ogg') ||
-            url.contains('audio') ||
-            url.contains(".mp3"));
+            objectPath.endsWith('.m4a') ||
+            objectPath.endsWith('.aac') ||
+            objectPath.endsWith('.wav') ||
+            objectPath.endsWith('.ogg') ||
+            objectPath.contains('audio') ||
+            objectPath.contains(".mp3"));
 
     Widget mediaWidget;
     if (isImage) {
