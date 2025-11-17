@@ -6,4 +6,5 @@ class FirebaseCollections {
   static const String newsAndResearches = 'newsAndResearches';
   static const String transplantCenters = 'transplantCenters';
   static const String playlist = 'playlist';
+  static const String inspirations = 'inspirations';
 }

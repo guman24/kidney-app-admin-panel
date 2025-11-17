@@ -37,17 +37,18 @@ class TableActionRow extends StatelessWidget {
             ),
           ),
         ),
-        InkWell(
-          onTap: onView,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Icon(
-              CupertinoIcons.eye,
-              color: AppColors.gradient40,
-              size: 18.0,
+        if (onView != null)
+          InkWell(
+            onTap: onView,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Icon(
+                CupertinoIcons.eye,
+                color: AppColors.gradient40,
+                size: 18.0,
+              ),
             ),
           ),
-        ),
       ],
     );
   }
