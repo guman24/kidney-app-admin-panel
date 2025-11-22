@@ -18,7 +18,7 @@ extension PostStatusX on PostStatus {
     } else if (isDeclined) {
       return AppColors.red;
     }
-    return AppColors.white;
+    return AppColors.black;
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kidney_admin/core/extension/json_extension.dart';
 import 'package:kidney_admin/entities/exercise.dart';
+import 'package:kidney_admin/entities/mindfullness.dart';
 import 'package:kidney_admin/entities/news.dart';
 import 'package:kidney_admin/entities/recipe.dart';
 import 'package:kidney_admin/routes/routes.dart';
@@ -19,6 +20,8 @@ import 'package:kidney_admin/views/exercises/exercises_screen.dart';
 import 'package:kidney_admin/views/exercises/upsert_exercise_screen.dart';
 import 'package:kidney_admin/views/mental_health/inspiration/inspirations_screen.dart';
 import 'package:kidney_admin/views/mental_health/journal/journal_screen.dart';
+import 'package:kidney_admin/views/mental_health/mindfullness/mindfullness_screen.dart';
+import 'package:kidney_admin/views/mental_health/mindfullness/upsert_meditation_screen.dart';
 import 'package:kidney_admin/views/mental_health/playlist/playlist_screen.dart';
 import 'package:kidney_admin/views/mental_health/playlist/upsert_playlist_screen.dart';
 import 'package:kidney_admin/views/news/news_research_screen.dart';
@@ -129,8 +132,21 @@ StatefulShellRoute dashboardRoute(Ref ref) {
             path: Routes.mindfullness.path,
             name: Routes.mindfullness.name,
             pageBuilder: (context, state) {
-              return NoTransitionPage(child: JournalScreen());
+              return NoTransitionPage(child: MindfullnessScreen());
             },
+            routes: [
+              GoRoute(
+                path: Routes.saveMindfullness.path,
+                name: Routes.saveMindfullness.name,
+                pageBuilder: (context, state) {
+                  return NoTransitionPage(
+                    child: UpsertMeditationScreen(
+                      mindfullness: state.extra as Mindfullness?,
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
           // GoRoute(
           //   path: Routes.mentalHealth.path,

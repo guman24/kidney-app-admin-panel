@@ -7,4 +7,5 @@ class FirebaseCollections {
   static const String transplantCenters = 'transplantCenters';
   static const String playlist = 'playlist';
   static const String inspirations = 'inspirations';
+  static const String mindfullness = 'mindfullness';
 }

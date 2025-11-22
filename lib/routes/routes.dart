@@ -10,6 +10,7 @@ enum Routes {
   inspirations("inspirations", '/inspirations'),
   journal("journal", '/journal'),
   mindfullness("mindfullness", '/mindfullness'),
+  saveMindfullness("save-mindfullness", '/save-mindfullness'),
   olivers("olivers", '/olivers'),
   recipes("recipes", '/recipes'),
   upsertRecipe("upsert-recipe", '/upsert-recipe'),

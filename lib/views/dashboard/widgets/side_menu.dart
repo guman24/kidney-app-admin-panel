@@ -56,7 +56,7 @@ class _SideMenuState extends ConsumerState<SideMenu> {
       "name": "Mental Health",
       "icon_outline": CupertinoIcons.capsule,
       'icon_filled': CupertinoIcons.capsule_fill,
-      'sub_menus': ["Playlist", "Inspirations", "Journal", "Mental Wellness"],
+      'sub_menus': ["Playlist", "Inspirations", "Journal", "Mindfullness"],
     },
     {
       "name": "Recipes",
